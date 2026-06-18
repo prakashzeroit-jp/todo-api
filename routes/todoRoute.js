@@ -3,5 +3,6 @@ const express = require("express");
 const router = express.Router();
 
 router.post("/", todoController.createTodo);
-
+router.get("/",todoController.getTodo);
+router.put("/:id",todoController.updateTodo);
 module.exports = router;

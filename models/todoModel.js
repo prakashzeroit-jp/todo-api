@@ -1,14 +1,18 @@
 const mongoose = require("mongoose");
 
 const todoSchema = new mongoose.Schema({
-  tittle: {
+  title: {
     type: String,
     required: true,
     trim: true,
   },
+  descreption : {
+   type : String,
+  required : true
+  },
   isCompleted: {
-    type: String,
-    required: true,
+    type: Boolean,
+    default: false
   },
 },{timestamps :  true});
 
