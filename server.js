@@ -11,6 +11,7 @@ connectDB();
 app.use("/api/create", todoroute); 
 app.use("/api/get",todoroute);
 app.use("/api/todos",todoroute);
+app.use("/api/delete",todoroute);
 app.listen(PORT, () => {
   console.log(`Server run at : ${PORT}`);
 });

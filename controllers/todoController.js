@@ -1,11 +1,13 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const todoModel = require("../models/todoModel");
 
 exports.createTodo = async (req, res) => {
   try {
     const { title, descreption, isCompleted } = req.body;
     if (!title) {
-     return res.status(200).json({ success: false, message: "Please provide title" });
+      return res
+        .status(200)
+        .json({ success: false, message: "Please provide title" });
     }
     const mycreate = await todoMedel.create({
       title: title,
@@ -96,11 +98,45 @@ exports.updateTodo = async (req, res) => {
 
     res.status(200).json({
       success: true,
-     
+
       message: "title updated succfully!",
       data: todo,
     });
   } catch (error) {
     res.status(400).json({ success: false, message: error.message });
+  }
+};
+
+exports.deleteTodo = async (req, res) => {
+  try {
+    const { id } = req.params;
+    //validate Id  based on mongoose
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid todo ID" });
+    }
+
+    //delete todo
+    const todo = await todoModel.findByIdAndDelete(id);
+
+    if (!todo) {
+      return res.status(404).json({
+        success: false,
+        message: "todo not found",
+      });
+    }
+
+    return res
+      .status(200)
+      .json({
+        success: false,
+        message: "todo deleted successfully",
+        data: todo,
+      });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ status: false, message: "Internal server error", data: error });
   }
 };
