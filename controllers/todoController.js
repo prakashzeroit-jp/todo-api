@@ -1,15 +1,15 @@
 const mongoose = require("mongoose");
 const todoModel = require("../models/todoModel");
+const {asyncHandler} = require('../middlewares/asyncHandler');
 
-exports.createTodo = async (req, res) => {
-  try {
+exports.createTodo = asyncHandler(async (req, res) => {
     const { title, descreption, isCompleted } = req.body;
     if (!title) {
       return res
         .status(200)
         .json({ success: false, message: "Please provide title" });
     }
-    const mycreate = await todoMedel.create({
+    const mycreate = await todoModel.create({
       title: title,
       descreption: descreption,
       isCompleted: isCompleted,
@@ -20,16 +20,13 @@ exports.createTodo = async (req, res) => {
       message: "todo created succssfully!",
       data: mycreate,
     });
-  } catch (error) {
-    console.error("Error Here", error.message);
-    res.status(500).json({ success: false, message: "invalid credentials!" });
-  }
-};
+ 
+});
 
-exports.getTodo = async (req, res) => {
-  try {
+exports.getTodo = asyncHandler(async (req, res) => {
+ 
     //query param
-    const { search, sort, page = 1, limit = 10 } = req.query;
+    const { search, sort, page = 1, limit = 30 } = req.query;
     //base query
     let query = {};
     //serach for title
@@ -42,13 +39,13 @@ exports.getTodo = async (req, res) => {
     else sortOption.createAt = -1;
     //pagination
     const skip = (page - 1) * limit;
-    const todos = await todoMedel
+    const todos = await todoModel
       .find(query)
       .sort(sortOption)
       .skip(skip)
       .limit(parseInt(limit));
 
-    const totalTodos = await todoMedel.countDocuments(query);
+    const totalTodos = await todoModel.countDocuments(query);
     return res.status(200).json({
       success: true,
       message: "Todo fetch successfully",
@@ -57,13 +54,11 @@ exports.getTodo = async (req, res) => {
       limit: Number(limit),
       data: todos,
     });
-  } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
-  }
-};
+  
+});
 
-exports.updateTodo = async (req, res) => {
-  try {
+exports.updateTodo = asyncHandler(async (req, res) => {
+ 
     const { id } = req.params;
 
     const { title, descreption } = req.body;
@@ -102,13 +97,11 @@ exports.updateTodo = async (req, res) => {
       message: "title updated succfully!",
       data: todo,
     });
-  } catch (error) {
-    res.status(400).json({ success: false, message: error.message });
-  }
-};
 
-exports.deleteTodo = async (req, res) => {
-  try {
+});
+
+exports.deleteTodo = asyncHandler(async (req, res) => {
+ 
     const { id } = req.params;
     //validate Id  based on mongoose
     if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -134,9 +127,5 @@ exports.deleteTodo = async (req, res) => {
         message: "todo deleted successfully",
         data: todo,
       });
-  } catch (error) {
-    res
-      .status(500)
-      .json({ status: false, message: "Internal server error", data: error });
-  }
-};
+
+});
