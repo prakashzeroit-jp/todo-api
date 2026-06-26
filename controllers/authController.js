@@ -1,5 +1,10 @@
 const mongoose = require("mongoose");
 const authModel = require("../models/authModel");
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+const generateToken = (id)=>{
+  return jwt.sign({id},process.env.JWT_SECRET,{expiresIn:'1d'});
+}
 
 exports.register = async (req, res) => {
   try {
@@ -18,10 +23,13 @@ exports.register = async (req, res) => {
         .json({ success: false, message: "user  is  already exist" });
     }
 
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password,salt);
+
     const user = await authModel.create({
       userName: userName,
       email: email,
-      password: password,
+      password: hashedPassword,
     });
 
     res.status(201).json({
@@ -57,15 +65,16 @@ exports.login = async (req, res) => {
         .json({ success: false, message: "Invalid user  or  password!" });
     }
 
-    if (user.password !== password) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Invalid user  or  password!" });
-    }
+    // if (user.password !== password) {
+    //   return res
+    //     .status(400)
+    //     .json({ success: false, message: "Invalid user  or  password!" });
+    // }
 
     res.status(200).json({
       success: true,
       message: "user  login  successfully!",
+      token : generateToken(user._id),
       data: {
         id: user._id,
         email: email,
