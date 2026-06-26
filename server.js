@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 const todoroute = require("./routes/todoRoute");
+const authRoute = require("./routes/authRoute");
 const todoController = require("./controllers/todoController");
 const connectDB = require("./config/db");
 const swaggerUi = require("swagger-ui-express");
@@ -12,6 +13,7 @@ const PORT = process.env.PORT || 5000;
 app.use(express.json());
 connectDB();    
 
+app.use("/api/register",authRoute);
 app.use("/api/create", todoroute); 
 app.use("/api/get",todoroute);
 app.use("/api/todos",todoroute);
