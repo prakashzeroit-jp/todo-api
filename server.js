@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 5000;
 app.use(express.json());
 connectDB();    
 
-app.use("/api/register",authRoute);
+app.use("/api",authRoute);
 app.use("/api/create", todoroute); 
 app.use("/api/get",todoroute);
 app.use("/api/todos",todoroute);
