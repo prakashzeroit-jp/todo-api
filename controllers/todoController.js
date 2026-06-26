@@ -3,7 +3,7 @@ const todoModel = require("../models/todoModel");
 const {asyncHandler} = require('../middlewares/asyncHandler');
 
 exports.createTodo = asyncHandler(async (req, res) => {
-    const { title, descreption, isCompleted } = req.body;
+    const { title, description, isCompleted } = req.body;
     if (!title) {
       return res
         .status(200)
@@ -11,12 +11,12 @@ exports.createTodo = asyncHandler(async (req, res) => {
     }
     const mycreate = await todoModel.create({
       title: title,
-      descreption: descreption,
+      description: description,
       isCompleted: isCompleted,
     });
     res.status(200).json({
       success: true,
-      descreption,
+      description,
       message: "todo created succssfully!",
       data: mycreate,
     });
@@ -61,7 +61,7 @@ exports.updateTodo = asyncHandler(async (req, res) => {
  
     const { id } = req.params;
 
-    const { title, descreption } = req.body;
+    const { title, description } = req.body;
 
     // validate id based on mongoose
     if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -81,7 +81,7 @@ exports.updateTodo = asyncHandler(async (req, res) => {
     const todo = await todoModel.findByIdAndUpdate(
       id,
 
-      { title, descreption },
+      { title, description },
       { new: true, runValidators: true },
     );
 

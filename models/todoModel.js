@@ -6,7 +6,7 @@ const todoSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
-  descreption : {
+  description: {
    type : String,
   required : true
   },
