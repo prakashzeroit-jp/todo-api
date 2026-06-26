@@ -26,7 +26,7 @@ exports.createTodo = asyncHandler(async (req, res) => {
 exports.getTodo = asyncHandler(async (req, res) => {
  
     //query param
-    const { search, sort, page = 1, limit = 30 } = req.query;
+    const { search, sort, page = 1, limit = 100 } = req.query;
     //base query
     let query = {};
     //serach for title

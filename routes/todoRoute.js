@@ -1,4 +1,5 @@
 const todoController = require("../controllers/todoController");
+const { protect } = require("../middlewares/authMiddlware");
 const express = require("express");
 const router = express.Router();
 
@@ -22,7 +23,7 @@ const router = express.Router();
  *       201:
  *         description: Todo created successfully
  */
-router.post("/", todoController.createTodo);
+router.post("/", protect, todoController.createTodo);
 /**
  * @swagger
  * /api/todos:
@@ -32,7 +33,7 @@ router.post("/", todoController.createTodo);
  *       200:
  *         description: Success
  */
-router.get("/",todoController.getTodo);
+router.get("/",protect, todoController.getTodo);
 /**
  * @swagger
  * /api/todos/{id}:
@@ -46,7 +47,7 @@ router.get("/",todoController.getTodo);
  *       200:
  *         description: Updated successfully
  */
-router.put("/:id",todoController.updateTodo);
+router.put("/:id",protect ,todoController.updateTodo);
 /**
  * @swagger
  * /api/todos/{id}:
@@ -60,5 +61,5 @@ router.put("/:id",todoController.updateTodo);
  *       200:
  *         description: Deleted successfully
  */
-router.delete("/:id",todoController.deleteTodo);
+router.delete("/:id", protect ,todoController.deleteTodo);
 module.exports = router;

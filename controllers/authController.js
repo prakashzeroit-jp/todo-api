@@ -2,6 +2,8 @@ const mongoose = require("mongoose");
 const authModel = require("../models/authModel");
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+
+
 const generateToken = (id)=>{
   return jwt.sign({id},process.env.JWT_SECRET,{expiresIn:'1d'});
 }
